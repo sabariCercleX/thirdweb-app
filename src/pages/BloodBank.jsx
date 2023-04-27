@@ -1,5 +1,3 @@
-
-
 import { Box, styled, TextField, Typography, Button } from '@mui/material'
 import axios from 'axios'
 import React, { useEffect } from 'react'
@@ -7,19 +5,19 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import CustomTable from '../components/CustomTable'
 
-function BloodRequest() {
+function BloodBank() {
   const [donorList, setDonorList] = useState([])
 
   const navigate = useNavigate()
 
   const navigateToDonorCreate = () => {
-    navigate('/createBloodRequest')
+    navigate('/dashboard/createDonor')
   }
 
   async function getDonorList(){
     var response = []
     try{
-        response = await axios.get('http://localhost:8080/bloodRequest/all').then(
+        response = await axios.get('http://localhost:8080/donor/getAllDonor').then(
             (response) => {return response.data}
         )
 
@@ -38,30 +36,25 @@ function BloodRequest() {
   const columns = React.useMemo(
     () => [
       {
-        accessorKey: 'name',
-        header: () => 'Request Name',
+        accessorKey: 'donorName',
+        header: () => 'Donor Name',
         footer: props => props.column.id,
       },
       {
-        accessorKey: 'address',
+        accessorKey: 'donorAddress',
         header: () => <span>Address</span>,
         footer: props => props.column.id,
       },
 
       {
-        accessorKey: 'mobile',
+        accessorKey: 'donorMobile',
         header: () => 'Mobile No',
         footer: props => props.column.id,
       },
 
       {
-        accessorKey: 'bloodType',
-        header: () => <span>Blood type</span>,
-        footer: props => props.column.id,
-      },
-      {
-        accessorKey: 'quantity',
-        header: () => <span>Quantity</span>,
+        accessorKey: 'bloodGroup',
+        header: () => <span>Blood Group</span>,
         footer: props => props.column.id,
       },
       {
@@ -97,27 +90,20 @@ function BloodRequest() {
       icon: 'fa-regular:eye',
       actionDataColumn: 'username'
     },
-    // {
-    //   actionName: 'Edit',
-    //   onClick: onEdit,
-    //   icon: 'material-symbols:edit',
-    //   actionDataColumn: 'username'
-    // }
+    {
+      actionName: 'Edit',
+      onClick: onEdit,
+      icon: 'material-symbols:edit',
+      actionDataColumn: 'username'
+    }
   ]
 
   return (
     <Box sx={{}}>
-        <Box sx={{width:'100%', height:`50px`, backgroundColor: 'error.main', dislay:'flex', justifyContent:'center', alignItems:'center', alignContent:'center'}}>
-            {/* <Typography variant='h5' sx={{color:'primary.contrastText', alignSelf:'center'}}>Blood Donor App</Typography> */}
-            <Box sx={{display:'flex', flexDirection:'row', alignItems:'center', height:'100%', mx: 3}}>
-            <Typography sx={{ mx: 2, color: '#fff'}} variant='h6' onClick={()=>{navigate('')}}> Donors</Typography>
-            <Typography sx={{ mx: 2, color: '#fff'}} variant='h6' onClick={()=>{navigate('/bloodRequest')}}> Blood Request</Typography>
-            </Box>
-        </Box>
        <Box sx={{width:'100%',  display:'flex', p:2 }}>
-        <Typography>Blood Request List</Typography>
+        <Typography>Blood Bank List</Typography>
         <Box sx={{flexGrow:1}}/>
-        <Button variant='contained' onClick={()=>{navigateToDonorCreate()}}>Create New Blood Request</Button>
+        <Button variant='contained' onClick={()=>{navigateToDonorCreate()}}>Add Blood Bank</Button>
       </Box>
       <Box>
       <CustomTable data={donorList} columns={columns} tabColumnName={'deliveryStatus'} actions={tableActions} />
@@ -126,4 +112,4 @@ function BloodRequest() {
   );
 }
 
-export default BloodRequest;
+export default BloodBank

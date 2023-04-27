@@ -1,5 +1,9 @@
-import { Box } from '@mui/material'
-import React from 'react'
+import { Box, styled, TextField, Typography, Button } from '@mui/material'
+import axios from 'axios'
+import React, { useEffect } from 'react'
+import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import CustomTable from '../components/CustomTable'
 
 function Donor() {
   const [donorList, setDonorList] = useState([])
@@ -7,7 +11,7 @@ function Donor() {
   const navigate = useNavigate()
 
   const navigateToDonorCreate = () => {
-    navigate('/createDonor')
+    navigate('/dashboard/createDonor')
   }
 
   async function getDonorList(){
@@ -96,14 +100,6 @@ function Donor() {
 
   return (
     <Box sx={{}}>
-        <Box sx={{width:'100%', height:`50px`, backgroundColor: 'error.main', dislay:'flex', justifyContent:'center', alignItems:'center', alignContent:'center'}}>
-            {/* <Typography variant='h5' sx={{color:'primary.contrastText', alignSelf:'center'}}>Blood Donor App</Typography> */}
-            <Box sx={{display:'flex', flexDirection:'row', alignItems:'center', height:'100%', mx: 3}}>
-            <Typography sx={{ mx: 2, color: '#fff'}} variant='h6' onClick={()=>{navigate('')}}> Donors</Typography>
-            <Typography sx={{ mx: 2, color: '#fff'}} variant='h6' onClick={()=>{navigate('/bloodRequest')}}> Blood Request</Typography>
-            </Box>
-            
-        </Box>
        <Box sx={{width:'100%',  display:'flex', p:2 }}>
         <Typography>Donor List</Typography>
         <Box sx={{flexGrow:1}}/>
