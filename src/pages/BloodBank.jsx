@@ -4,6 +4,7 @@ import React, { useEffect } from 'react'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import CustomTable from '../components/CustomTable'
+import { useContract, useContractRead } from "@thirdweb-dev/react";
 
 function BloodBank() {
   const [donorList, setDonorList] = useState([])
@@ -11,55 +12,34 @@ function BloodBank() {
   const navigate = useNavigate()
 
   const navigateToDonorCreate = () => {
-    navigate('/dashboard/createDonor')
+    navigate('/dashboard/createbloodbank')
   }
 
-  async function getDonorList(){
-    var response = []
-    try{
-        response = await axios.get('http://localhost:8080/donor/getAllDonor').then(
-            (response) => {return response.data}
-        )
+  const { contract } = useContract("0xE0c0C73992B208e74254A46f15368a21025cD5fb");
+  const { data, isLoading } = useContractRead(contract, "getBloodBank", [0, 10])
 
-        setDonorList(response)
-        console.log(donorList)
-    }catch(error){
-        console.log(error)
-    }
-  }
 
   useEffect(()=>{
-    getDonorList()
+    console.log(data)
   },[])
 
 
   const columns = React.useMemo(
     () => [
       {
-        accessorKey: 'donorName',
-        header: () => 'Donor Name',
+        accessorKey: 'name',
+        header: () => 'Blood Bank Name',
         footer: props => props.column.id,
       },
       {
-        accessorKey: 'donorAddress',
+        accessorKey: 'userAddress',
         header: () => <span>Address</span>,
         footer: props => props.column.id,
       },
 
       {
-        accessorKey: 'donorMobile',
+        accessorKey: 'mobile',
         header: () => 'Mobile No',
-        footer: props => props.column.id,
-      },
-
-      {
-        accessorKey: 'bloodGroup',
-        header: () => <span>Blood Group</span>,
-        footer: props => props.column.id,
-      },
-      {
-        accessorKey: 'username',
-        header: () => <span>Username</span>,
         footer: props => props.column.id,
       },
      
@@ -88,13 +68,13 @@ function BloodBank() {
       actionName: 'View',
       onClick: onView,
       icon: 'fa-regular:eye',
-      actionDataColumn: 'username'
+      actionDataColumn: 'bloodBankId'
     },
     {
       actionName: 'Edit',
       onClick: onEdit,
       icon: 'material-symbols:edit',
-      actionDataColumn: 'username'
+      actionDataColumn: 'bloodBankId'
     }
   ]
 
@@ -106,7 +86,7 @@ function BloodBank() {
         <Button variant='contained' onClick={()=>{navigateToDonorCreate()}}>Add Blood Bank</Button>
       </Box>
       <Box>
-      <CustomTable data={donorList} columns={columns} tabColumnName={'deliveryStatus'} actions={tableActions} />
+      { !isLoading && data && <CustomTable data={data} columns={columns} tabColumnName={'deliveryStatus'} actions={tableActions} />}
       </Box>
     </Box>
   );

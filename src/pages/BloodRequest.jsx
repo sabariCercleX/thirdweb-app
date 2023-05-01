@@ -107,13 +107,7 @@ function BloodRequest() {
 
   return (
     <Box sx={{}}>
-        <Box sx={{width:'100%', height:`50px`, backgroundColor: 'error.main', dislay:'flex', justifyContent:'center', alignItems:'center', alignContent:'center'}}>
-            {/* <Typography variant='h5' sx={{color:'primary.contrastText', alignSelf:'center'}}>Blood Donor App</Typography> */}
-            <Box sx={{display:'flex', flexDirection:'row', alignItems:'center', height:'100%', mx: 3}}>
-            <Typography sx={{ mx: 2, color: '#fff'}} variant='h6' onClick={()=>{navigate('')}}> Donors</Typography>
-            <Typography sx={{ mx: 2, color: '#fff'}} variant='h6' onClick={()=>{navigate('/bloodRequest')}}> Blood Request</Typography>
-            </Box>
-        </Box>
+        
        <Box sx={{width:'100%',  display:'flex', p:2 }}>
         <Typography>Blood Request List</Typography>
         <Box sx={{flexGrow:1}}/>

@@ -6,9 +6,11 @@ import React from 'react'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useSnackbar } from 'notistack';
+import { useContract, useContractWrite } from "@thirdweb-dev/react";
+
 
 function CreateRequest() {
-  const [donorDetails, setDonorDetails] = useState({donorName:'', donorAddress:'',donorMobile:'',bloodGroup:'', username:''})
+  const [donorDetails, setDonorDetails] = useState({userName:'', bloodType:'',userAddress:'',mobile:'', latitude:'', longitude:'', walletaddress:''})
 
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const navigate = useNavigate()
@@ -17,12 +19,24 @@ function CreateRequest() {
     navigate('/register')
   }
 
-  async function createDonor(){
-    try{
-        var response = await axios.post('http://localhost:8080/donor/create', donorDetails).then((res)=>{return res.data})
-        enqueueSnackbar('Donor Created Successfully')
-    }catch(error){
-        console.log(error)
+  // async function createDonor(){
+  //   try{
+  //       var response = await axios.post('http://localhost:8080/donor/create', donorDetails).then((res)=>{return res.data})
+  //       enqueueSnackbar('Donor Created Successfully')
+  //   }catch(error){
+  //       console.log(error)
+  //   }
+  // }
+
+  const { contract } = useContract("0xE0c0C73992B208e74254A46f15368a21025cD5fb");
+  const { mutateAsync: registerDonor, isLoading } = useContractWrite(contract, "registerDonor")
+
+  const call = async () => {
+    try {
+      const data = await registerDonor({ args: [userName, bloodType, userAddress, mobile, latitude, longitude, walletaddress] });
+      console.info("contract call successs", data);
+    } catch (err) {
+      console.error("contract call failure", err);
     }
   }
 

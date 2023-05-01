@@ -89,6 +89,8 @@ export default function CustomTable({
     }
   }, [table.getState().columnFilters[0]?.id]);
 
+  console.log(data)
+
   return (
     <Box>
       
@@ -138,6 +140,7 @@ export default function CustomTable({
               return (
                 <StyledTableRow key={row.id}>
                   {row.getVisibleCells().map((cell) => {
+                    
                     return (
                       <StyledTableCell key={cell.id}>
                         {flexRender(
